@@ -9,9 +9,9 @@ public class InteractableObject : MonoBehaviour
     [SerializeField] TypeOfInteraction typeOfInteraction;
 #pragma warning restore 649
 
-    bool isInteractable = true;
-
     enum TypeOfInteraction { PickUp, Open, Insert }
+
+    bool isInteractable = true;
     const float FADE_TIME = 0.1f;
 
     public virtual void DisplayMessage(bool isInRange, PlayerController player)
