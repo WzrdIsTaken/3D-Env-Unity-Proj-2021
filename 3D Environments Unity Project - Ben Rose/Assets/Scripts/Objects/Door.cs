@@ -7,6 +7,6 @@ public class Door : InteractableObject
     {
         // GameObject.Find("DungeonManager").GetComponent<DungeonManager>().OpenDoor();
 
-        SetInteractableState(false);
+        isInteractable = false;
     }
 }

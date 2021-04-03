@@ -11,7 +11,7 @@ public class InteractableObject : MonoBehaviour
 
     enum TypeOfInteraction { PickUp, Open, Insert }
 
-    bool isInteractable = true;
+    protected bool isInteractable = true;
     const float FADE_TIME = 0.1f;
 
     public virtual void DisplayMessage(bool isInRange, PlayerController player)
@@ -45,10 +45,5 @@ public class InteractableObject : MonoBehaviour
     public bool GetInteractableState()
     {
         return isInteractable;
-    }
-
-    protected void SetInteractableState(bool _isInteractable)
-    {
-        isInteractable = _isInteractable;
     }
 }

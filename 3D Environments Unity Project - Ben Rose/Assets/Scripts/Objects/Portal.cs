@@ -20,12 +20,12 @@ public class Portal : InteractableObject
         // - Shader starting
         // - ^ Cool cutscene ^
 
-        SetInteractableState(false);
+        isInteractable = false;
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.CompareTag("Player") && !GetInteractableState())
+        if (collision.collider.CompareTag("Player") && !isInteractable)
         {
             // Todo: Cool animation
             SceneManager.LoadScene("Wherever we go next");
