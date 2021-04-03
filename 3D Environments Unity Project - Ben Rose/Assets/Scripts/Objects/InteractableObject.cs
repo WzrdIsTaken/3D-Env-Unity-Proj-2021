@@ -8,14 +8,22 @@ public class InteractableObject : MonoBehaviour
     [SerializeField] string objectName;
     [SerializeField] TypeOfInteraction typeOfInteraction;
 #pragma warning restore 649
-    
-    enum TypeOfInteraction { PickUp, Open }
+
     bool isInteractable = true;
+
+    enum TypeOfInteraction { PickUp, Open, Insert }
     const float FADE_TIME = 0.1f;
 
-    public void DisplayMessage(bool isInRange, TMP_Text interactionText)
+    public virtual void DisplayMessage(bool isInRange, PlayerController player)
     {
-        interactionText.text = "Press P to " + typeOfInteraction.ToString().ToLower() + " " + objectName;
+        TMP_Text interactionText = player.GetInteractionText();
+
+        interactionText.text = "Press " + player.GetKey("Interaction") + " to " + typeOfInteraction.ToString().ToLower() + " the " + objectName;
+        FadeInteractionText(isInRange, interactionText);
+    }
+
+    protected void FadeInteractionText(bool isInRange, TMP_Text interactionText)
+    {
         interactionText.CrossFadeAlpha(isInRange ? 1.0f : 0.0f, FADE_TIME, false);
     }
 

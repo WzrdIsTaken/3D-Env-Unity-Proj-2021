@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour
 
     InteractableObject currentInteractableObject, currentlyHoldingObject;
 
+    const KeyCode RUN_KEY = KeyCode.LeftShift, JUMP_KEY = KeyCode.Space, INTERACTION_KEY = KeyCode.P, ALT_INTERACTION_KEY = KeyCode.E, ACTION_KEY = KeyCode.Mouse0;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -48,28 +50,28 @@ public class PlayerController : MonoBehaviour
         // Movement
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         Vector2 inputDirection = input.normalized;
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        bool isRunning = Input.GetKey(RUN_KEY);
 
         Move(inputDirection, isRunning);
 
-        if (Input.GetKeyDown(KeyCode.Space)) Jump();
+        if (Input.GetKeyDown(JUMP_KEY)) Jump();
 
         // Interaction
         Interact();
 
-        if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.E) && currentInteractableObject) // Interacting
+        if (Input.GetKeyDown(INTERACTION_KEY) || Input.GetKeyDown(ALT_INTERACTION_KEY) && currentInteractableObject) // Interacting
         {
             currentInteractableObject.Interact(this);
-            currentInteractableObject.DisplayMessage(false, interactionText);
+            currentInteractableObject.DisplayMessage(false, this);
             currentInteractableObject = null;
         }
-        else if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.E) && currentlyHoldingObject) // Uninteracting
+        else if (Input.GetKeyDown(INTERACTION_KEY) || Input.GetKeyDown(ALT_INTERACTION_KEY) && currentlyHoldingObject) // Uninteracting
         {
             currentlyHoldingObject.UnInteract(this);
             currentlyHoldingObject = null;
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) && currentlyHoldingObject) currentlyHoldingObject.Action(this); // Action
+        if (Input.GetKeyDown(ACTION_KEY) && currentlyHoldingObject) currentlyHoldingObject.Action(this); // Action
 
         // Animation
         float animationSpeedPercent = isRunning ? currentSpeed / runSpeed : currentSpeed / walkSpeed * 0.5f;
@@ -115,8 +117,6 @@ public class PlayerController : MonoBehaviour
 
     void Interact()
     {
-        if (currentlyHoldingObject) return;
-
         if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, interactionRange))
         {
             Collider hitCollider = hit.collider;
@@ -127,11 +127,11 @@ public class PlayerController : MonoBehaviour
                 if (!interactableObject.GetInteractableState()) return;
 
                 currentInteractableObject = interactableObject;
-                currentInteractableObject.DisplayMessage(true, interactionText);
+                currentInteractableObject.DisplayMessage(true, this);
             }
             else if (!hitCollider.CompareTag("InteractableObject") && currentInteractableObject)
             {
-                currentInteractableObject.DisplayMessage(false, interactionText);
+                currentInteractableObject.DisplayMessage(false, this);
                 currentInteractableObject = null;
             }
         }
@@ -139,7 +139,13 @@ public class PlayerController : MonoBehaviour
 
     public void SetCurrentlyHoldingObject(InteractableObject _currentlyHoldingObject)
     {
+        // The if checks make sure that we can't select an object we are currently holding. NameToLayer is a bit clearer than 0 / 2
+
+        if (!_currentlyHoldingObject) currentlyHoldingObject.gameObject.layer = LayerMask.NameToLayer("Default");
+
         currentlyHoldingObject = _currentlyHoldingObject;
+
+        if (currentlyHoldingObject) currentlyHoldingObject.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
     }
 
     public InteractableObject GetCurrentlyHoldingObject()
@@ -155,5 +161,29 @@ public class PlayerController : MonoBehaviour
     public Transform GetPickupPoint()
     {
         return pickableObjectPoint;
+    }
+
+    public TMP_Text GetInteractionText()
+    {
+        return interactionText;
+    }
+
+    public string GetKey(string type)
+    {
+        KeyCode key;
+
+        switch (type)
+        {
+            case "Interaction":
+                key = INTERACTION_KEY;
+                break;
+            case "Action":
+                key = ACTION_KEY;
+                break;
+            default:
+                throw new System.ArgumentException("'" + type + "' is an invalid key");
+        }
+
+        return key.ToString();
     }
 }
