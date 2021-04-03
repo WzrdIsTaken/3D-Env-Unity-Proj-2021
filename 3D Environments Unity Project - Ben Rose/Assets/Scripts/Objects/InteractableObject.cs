@@ -37,7 +37,7 @@ public class InteractableObject : MonoBehaviour
     {
     }
 
-    // The action once the object has been interacted with (eg: throwing the rock)
+    // The action once the object has been interacted with (eg: throwing a rock)
     public virtual void Action(PlayerController player)
     {
     }
