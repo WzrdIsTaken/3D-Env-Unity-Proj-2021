@@ -8,8 +8,9 @@ public class InteractableObject : MonoBehaviour
     [SerializeField] string objectName;
     [SerializeField] TypeOfInteraction typeOfInteraction;
 #pragma warning restore 649
-
+    
     enum TypeOfInteraction { PickUp, Open }
+    bool isInteractable = true;
     const float FADE_TIME = 0.1f;
 
     public void DisplayMessage(bool isInRange, TMP_Text interactionText)
@@ -23,7 +24,7 @@ public class InteractableObject : MonoBehaviour
     {
     }
 
-    // Putting down an object
+    // Stop interacting with an object (eg: putting something down)
     public virtual void UnInteract(PlayerController player)
     {
     }
@@ -31,5 +32,15 @@ public class InteractableObject : MonoBehaviour
     // The action once the object has been interacted with (eg: throwing the rock)
     public virtual void Action(PlayerController player)
     {
+    }
+
+    public bool GetInteractableState()
+    {
+        return isInteractable;
+    }
+
+    protected void SetInteractableState(bool _isInteractable)
+    {
+        isInteractable = _isInteractable;
     }
 }

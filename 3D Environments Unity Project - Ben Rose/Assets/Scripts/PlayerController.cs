@@ -57,14 +57,19 @@ public class PlayerController : MonoBehaviour
         // Interaction
         Interact();
 
-        if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.E) && currentInteractableObject) currentInteractableObject.Interact(this);
-        else if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.E) && currentlyHoldingObject)
+        if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.E) && currentInteractableObject) // Interacting
+        {
+            currentInteractableObject.Interact(this);
+            currentInteractableObject.DisplayMessage(false, interactionText);
+            currentInteractableObject = null;
+        }
+        else if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.E) && currentlyHoldingObject) // Uninteracting
         {
             currentlyHoldingObject.UnInteract(this);
             currentlyHoldingObject = null;
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) && currentlyHoldingObject) currentlyHoldingObject.Action(this);
+        if (Input.GetKeyDown(KeyCode.Mouse0) && currentlyHoldingObject) currentlyHoldingObject.Action(this); // Action
 
         // Animation
         float animationSpeedPercent = isRunning ? currentSpeed / runSpeed : currentSpeed / walkSpeed * 0.5f;
@@ -118,7 +123,10 @@ public class PlayerController : MonoBehaviour
 
             if (hitCollider.CompareTag("InteractableObject") && !currentInteractableObject)
             {
-                currentInteractableObject = hitCollider.GetComponent<InteractableObject>();
+                InteractableObject interactableObject = hitCollider.GetComponent<InteractableObject>();
+                if (!interactableObject.GetInteractableState()) return;
+
+                currentInteractableObject = interactableObject;
                 currentInteractableObject.DisplayMessage(true, interactionText);
             }
             else if (!hitCollider.CompareTag("InteractableObject") && currentInteractableObject)
@@ -132,8 +140,6 @@ public class PlayerController : MonoBehaviour
     public void SetCurrentlyHoldingObject(InteractableObject _currentlyHoldingObject)
     {
         currentlyHoldingObject = _currentlyHoldingObject;
-        currentInteractableObject?.DisplayMessage(false, interactionText);
-        currentInteractableObject = null;
     }
 
     public InteractableObject GetCurrentlyHoldingObject()
