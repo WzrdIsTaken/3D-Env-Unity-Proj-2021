@@ -15,8 +15,10 @@ public class Portal : InteractableObject
 
     public void StartPortal()
     {
+        print("Portal activated");
+
         // Todo: Start the portal 
-        // - Inserting key
+        // - Inserting key / removing it from player hand
         // - Shader starting
         // - ^ Cool cutscene ^
 

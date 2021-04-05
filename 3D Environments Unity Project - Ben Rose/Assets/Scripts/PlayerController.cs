@@ -153,6 +153,11 @@ public class PlayerController : MonoBehaviour
         return currentlyHoldingObject;
     }
 
+    public InteractableObject GetCurrentlyInteractingObject()
+    {
+        return currentInteractableObject;
+    }
+
     public float GetStrength()
     {
         return Random.Range(strength * strengthVariance, strength / strengthVariance);
