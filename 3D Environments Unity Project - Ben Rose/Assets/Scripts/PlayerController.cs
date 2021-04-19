@@ -20,12 +20,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] [Range(0, 1)] float strengthVariance = 0.9f; // Closer to 1 -> less strength can vary
 
     [SerializeField] float interactionRange = 10;
-    [SerializeField] Camera playerCamera;
 
     [SerializeField] Transform pickableObjectPoint;
     [SerializeField] TMP_Text interactionText;
 #pragma warning restore 649
 
+    Camera playerCamera;
     Animator animator;
     Transform cameraTransform;
     CharacterController controller;
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        cameraTransform = Camera.main.transform;
+        cameraTransform = playerCamera.transform;
         controller = GetComponent<CharacterController>();
 
         interactionText.CrossFadeAlpha(0, 0, false);
@@ -190,5 +190,10 @@ public class PlayerController : MonoBehaviour
         }
 
         return key.ToString();
+    }
+
+    public void SetNewCamera(Camera newCamera)
+    {
+        playerCamera = newCamera;
     }
 }
