@@ -14,7 +14,7 @@ public class CameraManager : MonoBehaviour
     PlayerController player;
     Camera currentCamera;
 
-    void Start()
+    void Awake() // Awake because we want the player camera to be set before the PlayerController starts
     {
         player = FindObjectOfType<PlayerController>();
 
