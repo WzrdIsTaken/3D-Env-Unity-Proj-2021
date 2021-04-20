@@ -43,6 +43,8 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
 
         interactionText.CrossFadeAlpha(0, 0, false);
+
+        Cursor.visible = false;
     }
 
     void Update()
