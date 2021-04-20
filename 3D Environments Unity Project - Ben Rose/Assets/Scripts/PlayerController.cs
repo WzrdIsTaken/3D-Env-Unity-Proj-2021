@@ -25,7 +25,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TMP_Text interactionText;
 #pragma warning restore 649
 
-    Camera playerCamera;
     Animator animator;
     Transform cameraTransform;
     CharacterController controller;
@@ -39,7 +38,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        cameraTransform = playerCamera.transform;
         controller = GetComponent<CharacterController>();
 
         interactionText.CrossFadeAlpha(0, 0, false);
@@ -63,8 +61,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(INTERACTION_KEY) || Input.GetKeyDown(ALT_INTERACTION_KEY) && currentInteractableObject) // Interacting
         {
-            currentInteractableObject.Interact(this);
-            currentInteractableObject.DisplayMessage(false, this);
+            currentInteractableObject?.Interact(this);
+            currentInteractableObject?.DisplayMessage(false, this);
             currentInteractableObject = null;
         }
         else if (Input.GetKeyDown(INTERACTION_KEY) || Input.GetKeyDown(ALT_INTERACTION_KEY) && currentlyHoldingObject) // Uninteracting
@@ -84,7 +82,7 @@ public class PlayerController : MonoBehaviour
     {
         if (inputDirection != Vector2.zero)
         {
-            float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
+            float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg + Mathf.Clamp(cameraTransform.eulerAngles.y, 0, 60);
             transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref turnSmoothVelocity, GetModifiedSmoothTime(turnSmoothTime));
         }
 
@@ -199,6 +197,13 @@ public class PlayerController : MonoBehaviour
 
     public void SetNewCamera(Camera newCamera)
     {
-        playerCamera = newCamera;
+        // A pretty bad solution + movement still feels a bit off - but maybe that's just because of the fact that the end room contains diagonal rooms.
+        if (newCamera.name == "MainRoomCamera")
+        {
+            cameraTransform = GameObject.Find("MainRoomTransformPoint").transform;
+            return;
+        }
+
+        cameraTransform = newCamera.transform;
     }
 }
