@@ -5,8 +5,9 @@ public class Door : InteractableObject
 {
     public override void Interact(PlayerController player)
     {
-        // GameObject.Find("DungeonManager").GetComponent<DungeonManager>().OpenDoor();
+        FindObjectOfType<DungeonManager>().OpenDoor();
 
+        GetComponent<BoxCollider>().enabled = false;
         isInteractable = false;
     }
 }

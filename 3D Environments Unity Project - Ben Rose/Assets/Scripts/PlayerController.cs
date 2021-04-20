@@ -19,9 +19,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float strength = 10;
     [SerializeField] [Range(0, 1)] float strengthVariance = 0.9f; // Closer to 1 -> less strength can vary
 
-    [SerializeField] float interactionRange = 10;
+    [SerializeField] float interactionRange = 2;
 
-    [SerializeField] Transform pickableObjectPoint;
+    [SerializeField] Transform pickableObjectPoint, interactionRaycastPoint;
     [SerializeField] TMP_Text interactionText;
 #pragma warning restore 649
 
@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour
 
     void Interact()
     {
-        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, interactionRange))
+        if (Physics.Raycast(interactionRaycastPoint.position, interactionRaycastPoint.forward, out RaycastHit hit, interactionRange))
         {
             Collider hitCollider = hit.collider;
 
@@ -129,11 +129,14 @@ public class PlayerController : MonoBehaviour
                 currentInteractableObject = interactableObject;
                 currentInteractableObject.DisplayMessage(true, this);
             }
-            else if (!hitCollider.CompareTag("InteractableObject") && currentInteractableObject)
-            {
-                currentInteractableObject.DisplayMessage(false, this);
-                currentInteractableObject = null;
-            }
+
+            return;
+        }
+
+        if (currentInteractableObject)
+        {
+            currentInteractableObject.DisplayMessage(false, this);
+            currentInteractableObject = null;
         }
     }
 

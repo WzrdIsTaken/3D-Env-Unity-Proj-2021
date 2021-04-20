@@ -27,13 +27,6 @@ public class CameraManager : MonoBehaviour
         
     }
 
-    /* If not going with this approach can get rid of the currentCamera variable
-    void LateUpdate()
-    {
-        currentCamera.transform.LookAt(player.transform);
-    }
-    */
-
     public void PlayerCollidedWithTrigger(CameraLocations location)
     {
         currentCamera.gameObject.SetActive(false);
