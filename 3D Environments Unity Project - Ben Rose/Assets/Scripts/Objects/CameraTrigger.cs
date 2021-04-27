@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class CameraTrigger : MonoBehaviour
 {
 #pragma warning disable 649
     [SerializeField] CameraManager.CameraLocations switchLocation;
     [SerializeField] GameObject pair;
+    [SerializeField] SpecialAction specialAction;
 #pragma warning restore 649
 
     CameraManager cameraManager;
@@ -22,6 +24,7 @@ public class CameraTrigger : MonoBehaviour
         {
             cameraManager.PlayerCollidedWithTrigger(switchLocation);
 
+            specialAction.TriggerAction();
             pair.SetActive(true);
             gameObject.SetActive(false);
         }
@@ -31,29 +34,30 @@ public class CameraTrigger : MonoBehaviour
     {
         return (int)System.Convert.ChangeType(switchLocation, switchLocation.GetTypeCode());
     }
-}
 
-/* Other version, doesn't account for the player being on the trigger then going back the other way 
- 
-#pragma warning disable 649
-    [SerializeField] CameraManager.CameraLocations cameFromLocation, goToLocation; // Came from / go to are the locations that the player visits when they progress one way through the level
-#pragma warning restore 649
-
-    CameraManager.CameraLocations currentCameraLocation;
-    CameraManager cameraManager;
-
-    void Start()
+    [System.Serializable]
+    class SpecialAction
     {
-        cameraManager = FindObjectOfType<CameraManager>();
-        currentCameraLocation = goToLocation;
-    }
+        public UnityEvent specialAction;
+        public bool actionCanOnlyBeTriggeredOnce;
 
-    void OnTriggerEnter(Collider collider)
-    {
-        if (collider.CompareTag("Player")) 
+        bool actionTriggered = false;
+
+        public SpecialAction(UnityEvent _specialAction, bool _actionCanOnlyBeTriggeredOnce)
         {
-            cameraManager.PlayerCollidedWithTrigger(currentCameraLocation);
-            currentCameraLocation = currentCameraLocation == cameFromLocation ? goToLocation : cameFromLocation;
+            specialAction = _specialAction;
+            actionCanOnlyBeTriggeredOnce = _actionCanOnlyBeTriggeredOnce;
+        }
+
+        public void TriggerAction()
+        {
+            if (actionCanOnlyBeTriggeredOnce)
+            {
+                if (actionTriggered) return;
+                actionTriggered = true;
+            }
+
+            specialAction?.Invoke();
         }
     }
- */
+}

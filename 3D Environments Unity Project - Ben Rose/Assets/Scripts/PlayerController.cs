@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using System.Collections;
 
 // Controls the player 5head | Base: https://bit.ly/391dTIA
 
@@ -75,9 +76,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(ACTION_KEY) && currentlyHoldingObject) currentlyHoldingObject.Action(this); // Action
 
-        // Animation
-        float animationSpeedPercent = isRunning ? currentSpeed / runSpeed : currentSpeed / walkSpeed * 0.5f;
-        animator.SetFloat("speedPercent", animationSpeedPercent, speedSmoothTime, Time.deltaTime);
+        // Animation 
+        PlayMovementAnimation(isRunning);
     }
 
     void Move(Vector2 inputDirection, bool isRunning)
@@ -98,6 +98,12 @@ public class PlayerController : MonoBehaviour
         currentSpeed = new Vector2(controller.velocity.x, controller.velocity.z).magnitude;
 
         if (controller.isGrounded) velocityY = 0;
+    }
+
+    void PlayMovementAnimation(bool isRunning)
+    {
+        float animationSpeedPercent = isRunning ? currentSpeed / runSpeed : currentSpeed / walkSpeed * 0.5f;
+        animator.SetFloat("speedPercent", animationSpeedPercent, speedSmoothTime, Time.deltaTime);
     }
 
     void Jump()
@@ -181,7 +187,29 @@ public class PlayerController : MonoBehaviour
     public void SetDenyInput(bool _denyInput)
     {
         denyInput = _denyInput;
+
+        currentSpeed = 0;
         animator.SetFloat("speedPercent", 0);
+    }
+
+    public IEnumerator ForceMovement(Vector3 targetPosition, float speed, float duration)
+    {
+        SetDenyInput(true);
+        currentSpeed = speed;
+        float timer = 0;
+        transform.rotation = new Quaternion(0, 0, 0, 0);
+
+        while (timer < duration)
+        {
+            // Kinda a bot method
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+            PlayMovementAnimation(speed > runSpeed);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        SetDenyInput(false);
     }
 
     public string GetKey(string type)

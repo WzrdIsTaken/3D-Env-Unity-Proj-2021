@@ -17,13 +17,6 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField] CameraCutscenePair corridorCutscene, mainRoomCutscene;
 #pragma warning restore 649
 
-    PlayableDirector director;
-
-    void Start()
-    {
-        director = GetComponent<PlayableDirector>();
-    }
-
     public void PlayCorridorCutscene()
     {
         void SetDenyInputOnPlayer(bool value)
@@ -34,6 +27,18 @@ public class CutsceneManager : MonoBehaviour
         StartCoroutine(PlayCutscene(corridorCutscene, SetDenyInputOnPlayer));
     }
 
+    public void PlayMainRoomCutscene()
+    {
+        void ForcePlayerMoveForward(bool value)
+        {
+            //FindObjectOfType<PlayerController>().SetDenyInput(value);
+
+            if (value) StartCoroutine(FindObjectOfType<PlayerController>().ForceMovement(new Vector3(0, 0.1f, 30), 1, 5));
+        }
+
+        StartCoroutine(PlayCutscene(mainRoomCutscene, ForcePlayerMoveForward));
+    }
+
     IEnumerator PlayCutscene(CameraCutscenePair cutscene, Action<bool> specificAction = null)
     {
         GameObject mainCamera = Camera.main.gameObject;
@@ -41,9 +46,10 @@ public class CutsceneManager : MonoBehaviour
         specificAction?.Invoke(true);
 
         cutscene.camera.SetActive(true);
-        director.Play(cutscene.playable);
+        cutscene.playableDirector.time = 0;
+        cutscene.playableDirector.Play();
 
-        yield return new WaitForSeconds((float)director.duration);
+        yield return new WaitForSeconds((float)cutscene.playableDirector.duration);
 
         specificAction?.Invoke(false);
         cutscene.camera.SetActive(false);
@@ -54,12 +60,12 @@ public class CutsceneManager : MonoBehaviour
     struct CameraCutscenePair
     {
         public GameObject camera;
-        public PlayableAsset playable;
+        public PlayableDirector playableDirector;
 
-        public CameraCutscenePair(GameObject _camera, PlayableAsset _playable)
+        public CameraCutscenePair(GameObject _camera, PlayableDirector _playableDirector)
         {
             camera = _camera;
-            playable = _playable;
+            playableDirector = _playableDirector;
         }
     }
 }
