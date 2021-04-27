@@ -31,9 +31,10 @@ public class CutsceneManager : MonoBehaviour
     {
         void ForcePlayerMoveForward(bool value)
         {
-            //FindObjectOfType<PlayerController>().SetDenyInput(value);
+            PlayerController playerController = FindObjectOfType<PlayerController>();
+            playerController.SetDenyInput(value);
 
-            if (value) StartCoroutine(FindObjectOfType<PlayerController>().ForceMovement(new Vector3(0, 0.1f, 30), 1, 5));
+            if (value) StartCoroutine(playerController.ForceMovement(new Vector3(0, 0.1f, 30), new Quaternion(0, 0, 0, 0), 1, 5));
         }
 
         StartCoroutine(PlayCutscene(mainRoomCutscene, ForcePlayerMoveForward));

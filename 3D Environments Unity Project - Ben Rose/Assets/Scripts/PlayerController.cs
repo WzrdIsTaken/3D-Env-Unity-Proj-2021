@@ -192,12 +192,11 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("speedPercent", 0);
     }
 
-    public IEnumerator ForceMovement(Vector3 targetPosition, float speed, float duration)
+    public IEnumerator ForceMovement(Vector3 targetPosition, Quaternion initialRotation, float speed, float duration)
     {
-        SetDenyInput(true);
         currentSpeed = speed;
         float timer = 0;
-        transform.rotation = new Quaternion(0, 0, 0, 0);
+        transform.rotation = initialRotation;
 
         while (timer < duration)
         {
@@ -209,7 +208,8 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
 
-        SetDenyInput(false);
+        currentSpeed = 0;
+        animator.SetFloat("speedPercent", 0);
     }
 
     public string GetKey(string type)
