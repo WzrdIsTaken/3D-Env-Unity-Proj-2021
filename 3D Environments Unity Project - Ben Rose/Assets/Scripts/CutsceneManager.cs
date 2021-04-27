@@ -4,10 +4,17 @@ using System;
 using System.Collections;
 
 // Does cool cutscene stuff
+
+/** 
+ * It would be possible to just have a single cutscene camera, but having the pair means that things are clearer in the inspector imo. 
+ * Maybe not in this project, but in a larger one with more complex cameras I think clarity would take precedent. 
+ * Eg: Instead of having to play the animation that sets the camera settings, you could instantly see that its a wide angle shot with a specific target texture.
+**/
+
 public class CutsceneManager : MonoBehaviour
 {
 #pragma warning disable 649
-    [SerializeField] CameraCutscenePair corridorCutscene;
+    [SerializeField] CameraCutscenePair corridorCutscene, mainRoomCutscene;
 #pragma warning restore 649
 
     PlayableDirector director;

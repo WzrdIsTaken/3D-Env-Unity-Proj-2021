@@ -181,6 +181,7 @@ public class PlayerController : MonoBehaviour
     public void SetDenyInput(bool _denyInput)
     {
         denyInput = _denyInput;
+        animator.SetFloat("speedPercent", 0);
     }
 
     public string GetKey(string type)
