@@ -15,6 +15,7 @@ public class DungeonManager : MonoBehaviour
     public void OpenDoor()
     {
         animator.SetTrigger(OPEN_DOOR);
+        FindObjectOfType<CutsceneManager>().PlayCorridorCutscene();
     }
 
     public void CloseDoor()

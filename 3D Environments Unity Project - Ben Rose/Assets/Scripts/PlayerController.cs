@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     CharacterController controller;
 
     float turnSmoothVelocity, speedSmoothVelocity, currentSpeed, velocityY;
-
+    bool denyInput;
     InteractableObject currentInteractableObject, currentlyHoldingObject;
 
     const KeyCode RUN_KEY = KeyCode.LeftShift, JUMP_KEY = KeyCode.Space, INTERACTION_KEY = KeyCode.P, ALT_INTERACTION_KEY = KeyCode.E, ACTION_KEY = KeyCode.Mouse0;
@@ -47,6 +47,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (denyInput) return;
+
         // Movement
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         Vector2 inputDirection = input.normalized;
@@ -174,6 +176,11 @@ public class PlayerController : MonoBehaviour
     public TMP_Text GetInteractionText()
     {
         return interactionText;
+    }
+
+    public void SetDenyInput(bool _denyInput)
+    {
+        denyInput = _denyInput;
     }
 
     public string GetKey(string type)

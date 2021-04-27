@@ -22,11 +22,6 @@ public class CameraManager : MonoBehaviour
         player.SetNewCamera(currentCamera);
     }
 
-    void Update()
-    {
-        
-    }
-
     public void PlayerCollidedWithTrigger(CameraLocations location)
     {
         currentCamera.gameObject.SetActive(false);
@@ -40,7 +35,12 @@ public class CameraManager : MonoBehaviour
     {
         foreach (KeyCameraPair pair in cameras)
         {
-            if (pair.location == location) return pair.camera;
+            if (pair.location == location) 
+            {
+                if (currentCamera) currentCamera.tag = "Untagged";
+                pair.camera.gameObject.tag = "MainCamera";
+                return pair.camera;
+            }
         }
 
         throw new System.ArgumentException(location.ToString() + " does not have a KeyCameraPair match");
