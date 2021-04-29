@@ -3,10 +3,10 @@
 // Changes between cameras
 public class CameraManager : MonoBehaviour
 {
-    [HideInInspector] public enum CameraLocations { START_ROOM, CORRIDOR, MAIN_ROOM_ONE, MAIN_ROOM_TWO };
+    [HideInInspector] public enum CameraLocations { START_ROOM, CORRIDOR, MAIN_ROOM, CUBBIES };
 
 #pragma warning disable 649
-    [SerializeField] KeyCameraPair[] cameras;
+    [SerializeField] KeyCameraData[] cameras;
 #pragma warning restore 649
 
     CameraLocations currentCameraLocation;
@@ -18,28 +18,39 @@ public class CameraManager : MonoBehaviour
     {
         player = FindObjectOfType<PlayerController>();
 
-        currentCamera = GetCameraWithKey(CameraLocations.START_ROOM);
+        currentCamera = GetCameraWithKey(CameraLocations.START_ROOM).camera;
         player.SetNewCamera(currentCamera);
     }
 
     public void PlayerCollidedWithTrigger(CameraLocations location)
     {
+        KeyCameraData keyCameraData = GetCameraWithKey(location);
+
         currentCamera.gameObject.SetActive(false);
-        currentCamera = GetCameraWithKey(location);
+        currentCamera = keyCameraData.camera;
         currentCamera.gameObject.SetActive(true);
 
-        player.SetNewCamera(currentCamera);
+        if (!keyCameraData.dontMakePlayerRotationPoint) 
+        {
+            if (keyCameraData.cameraMovement == CameraMovement.CameraMode.ROTATE || keyCameraData.cameraMovement == CameraMovement.CameraMode.ADVANCED_ROTATE) 
+            {
+                // Movement in the main room sometimes feels a bit off
+                // I don't know if its placebo (xd) but setting the camera rotation back to 0 might help?
+                // Todo: Experiement with this
+            }
+            player.SetNewCamera(currentCamera);
+        }
     }
 
-    Camera GetCameraWithKey(CameraLocations location) // Could precalculate all kvp's with a dict
+    KeyCameraData GetCameraWithKey(CameraLocations location) // Could precalculate all kvp's with a dict
     {
-        foreach (KeyCameraPair pair in cameras)
+        foreach (KeyCameraData pair in cameras)
         {
             if (pair.location == location) 
             {
                 if (currentCamera) currentCamera.tag = "Untagged";
                 pair.camera.gameObject.tag = "MainCamera";
-                return pair.camera;
+                return pair;
             }
         }
 
@@ -47,15 +58,20 @@ public class CameraManager : MonoBehaviour
     }
 
     [System.Serializable]
-    struct KeyCameraPair
+    struct KeyCameraData
     {
         public CameraLocations location;
         public Camera camera;
+        public bool dontMakePlayerRotationPoint;
+        [HideInInspector] public CameraMovement.CameraMode cameraMovement;
 
-        public KeyCameraPair(CameraLocations _location, Camera _camera)
+        public KeyCameraData(CameraLocations _location, Camera _camera, bool _dontMakePlayerRotationPoint)
         {
             location = _location;
             camera = _camera;
+            dontMakePlayerRotationPoint = _dontMakePlayerRotationPoint;
+
+            cameraMovement = camera.GetComponent<CameraMovement>().GetCameraMode();
         }
     }
 }

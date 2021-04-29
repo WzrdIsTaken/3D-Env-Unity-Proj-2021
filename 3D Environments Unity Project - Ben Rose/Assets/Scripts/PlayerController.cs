@@ -2,7 +2,7 @@
 using TMPro;
 using System.Collections;
 
-// Controls the player 5head | Base: https://bit.ly/391dTIA
+// Controls the player 5head | Movement base: https://bit.ly/391dTIA
 
 /**
  * Controls: 
@@ -233,13 +233,7 @@ public class PlayerController : MonoBehaviour
 
     public void SetNewCamera(Camera newCamera)
     {
-        // A pretty bad solution + movement still feels a bit off - but maybe that's just because of the fact that the end room contains diagonal rooms.
-        if (newCamera.name == "MainRoomCamera")
-        {
-            cameraTransform = GameObject.Find("MainRoomTransformPoint").transform;
-            return;
-        }
-
         cameraTransform = newCamera.transform;
+        print(cameraTransform.rotation.eulerAngles);
     }
 }

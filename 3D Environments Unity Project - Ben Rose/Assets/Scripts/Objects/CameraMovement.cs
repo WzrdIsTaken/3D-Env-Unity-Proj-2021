@@ -7,7 +7,7 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] CameraMode cameraMode;
 #pragma warning restore 649
 
-    enum CameraMode { NONE, FOLLOW, ROTATE, ADVANCED_ROTATE };
+    [HideInInspector] public enum CameraMode { NONE, FOLLOW, ROTATE, ADVANCED_ROTATE };
     Transform player;
 
     // CameraMode specific stuff
@@ -55,5 +55,10 @@ public class CameraMovement : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
         float yOffset = Mathf.Clamp(distanceToPlayer / 3, 0, 4);
         transform.position = new Vector3(transform.position.x, CAMERA_START_POSITION.y - yOffset, transform.position.z);
+    }
+
+    public CameraMode GetCameraMode()
+    {
+        return cameraMode;
     }
 }
