@@ -24508,8 +24508,8 @@ GameObject:
   - component: {fileID: 5895169166237449334}
   - component: {fileID: 5895169166237449335}
   m_Layer: 0
-  m_Name: Player
-  m_TagString: Untagged
+  m_Name: TestPlayer
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24565,7 +24565,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 2
-  runSpeed: 6
+  runSpeed: 4
   jumpHeight: 1
   turnSmoothTime: 0.2
   speedSmoothTime: 0.1
@@ -24573,9 +24573,9 @@ MonoBehaviour:
   airControl: 0.1
   strength: 10
   strengthVariance: 0.9
-  interactionRange: 10
-  playerCamera: {fileID: 0}
+  interactionRange: 2
   pickableObjectPoint: {fileID: 6986673653559939973}
+  interactionRaycastPoint: {fileID: 657736549225195036}
   interactionText: {fileID: 0}
 --- !u!143 &5895169166237449335
 CharacterController:
@@ -24589,11 +24589,11 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1.7
-  m_Radius: 0.25
+  m_Radius: 0.75
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.9, z: 0.09}
 --- !u!1 &5980776247593084582
 GameObject:
@@ -24903,7 +24903,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a0a71e1ec02ff8144be5956ac2ca7326, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour
 
     void Interact()
     {
-        if (Physics.Raycast(interactionRaycastPoint.position, interactionRaycastPoint.forward, out RaycastHit hit, interactionRange))
+        if (Physics.Raycast(interactionRaycastPoint.position, interactionRaycastPoint.forward, out RaycastHit hit, interactionRange) && controller.isGrounded)
         {
             Collider hitCollider = hit.collider;
 
