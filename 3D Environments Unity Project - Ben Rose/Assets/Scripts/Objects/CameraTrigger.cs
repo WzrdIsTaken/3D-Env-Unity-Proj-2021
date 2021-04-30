@@ -5,7 +5,7 @@ public class CameraTrigger : MonoBehaviour
 {
 #pragma warning disable 649
     [SerializeField] CameraManager.CameraLocations switchLocation;
-    [SerializeField] GameObject pair;
+    [SerializeField] GameObject pair = null; // If a trigger only triggers a cutscene, then its ok for it to not have a pair
     [SerializeField] SpecialAction specialAction;
 #pragma warning restore 649
 
@@ -14,8 +14,8 @@ public class CameraTrigger : MonoBehaviour
     void Start()
     {
         cameraManager = FindObjectOfType<CameraManager>();
-
-        gameObject.SetActive(GetCameraLocation() > pair.GetComponent<CameraTrigger>().GetCameraLocation()); // Determine which trigger will be active first (lower enum value = closer to start)
+        
+        gameObject.SetActive(GetCameraLocation() > (pair ? pair.GetComponent<CameraTrigger>().GetCameraLocation() : int.MinValue)); // Determine which trigger will be active first (lower enum value = closer to start)
     }
 
     void OnTriggerEnter(Collider collider)
@@ -25,7 +25,7 @@ public class CameraTrigger : MonoBehaviour
             cameraManager.PlayerCollidedWithTrigger(switchLocation);
 
             specialAction.TriggerAction();
-            pair.SetActive(true);
+            if (pair) pair.SetActive(true);
             gameObject.SetActive(false);
         }
     }

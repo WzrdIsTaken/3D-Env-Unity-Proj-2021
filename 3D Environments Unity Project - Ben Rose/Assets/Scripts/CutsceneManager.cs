@@ -14,7 +14,7 @@ using System.Collections;
 public class CutsceneManager : MonoBehaviour
 {
 #pragma warning disable 649
-    [SerializeField] CameraCutscenePair corridorCutscene, mainRoomCutscene;
+    [SerializeField] CameraCutscenePair corridorCutscene, doorSlamCutscene, mainRoomCutscene;
 #pragma warning restore 649
 
     public void PlayCorridorCutscene()
@@ -25,6 +25,23 @@ public class CutsceneManager : MonoBehaviour
         }
         
         StartCoroutine(PlayCutscene(corridorCutscene, SetDenyInputOnPlayer));
+    }
+
+    public void PlayDoorSlamCutscene()
+    {
+        void ForcePlayerRotate(bool value)
+        {
+            PlayerController playerController = FindObjectOfType<PlayerController>();
+            playerController.SetDenyInput(value);
+
+            if (value)
+            {
+                StartCoroutine(FindObjectOfType<DungeonManager>().StartAnimation(DungeonManager.Animation.CLOSE_DOOR, 1));
+                StartCoroutine(playerController.ForceRotation(new Quaternion(0, 180, 0, 0), 2, 1.5f));
+            }
+        }
+
+        StartCoroutine(PlayCutscene(doorSlamCutscene, ForcePlayerRotate));
     }
 
     public void PlayMainRoomCutscene()

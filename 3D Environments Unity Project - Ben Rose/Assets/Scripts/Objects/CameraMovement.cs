@@ -10,7 +10,15 @@ public class CameraMovement : MonoBehaviour
     [HideInInspector] public enum CameraMode { NONE, FOLLOW, ROTATE, ADVANCED_ROTATE };
     Transform player;
 
-    // CameraMode specific stuff
+    // CameraMode specific stuff: 
+
+    /**
+     * Currently, these values are just hardcoded in because I only have one type of each camera in the scene and having them all be serialized
+     * when each type of camera only uses a few (or none) of them would be pretty ugly. I started work on an editor script but its very low
+     * priority (see Assets/Scripts/Editor).
+    **/
+
+    // Advanced rotate variables
     Vector3 CAMERA_START_POSITION;
     readonly Vector3 CAMERA_FOLLOW_OFFSET = new Vector3(0, 0, -2);
 

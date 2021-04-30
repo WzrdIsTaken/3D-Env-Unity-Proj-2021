@@ -131,7 +131,8 @@ public class PlayerController : MonoBehaviour
 
             if (hitCollider.CompareTag("InteractableObject") && !currentInteractableObject)
             {
-                InteractableObject interactableObject = hitCollider.GetComponent<InteractableObject>() ?? hitCollider.GetComponentInParent<InteractableObject>();
+                // Pickupable objects have a child collider to make them easier to raycast to, so to get the InteractableObject component we have to access the parent
+                InteractableObject interactableObject = hitCollider.GetComponent<InteractableObject>() ?? hitCollider.GetComponentInParent<InteractableObject>(); 
                 if (!interactableObject.GetInteractableState()) return;
 
                 currentInteractableObject = interactableObject;
@@ -192,21 +193,42 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("speedPercent", 0);
     }
 
-    public IEnumerator ForceMovement(Vector3 targetPosition, Quaternion initialRotation, float speed, float duration)
+    public IEnumerator ForceRotation(Quaternion targetRotation, float duration, float intialWaitTime=0)
     {
-        currentSpeed = speed;
+        yield return new WaitForSeconds(intialWaitTime);
+
         float timer = 0;
-        transform.rotation = initialRotation;
 
         while (timer < duration)
         {
-            // Kinda a bot method
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, timer / duration * Time.deltaTime);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.rotation = targetRotation;
+    }
+
+    public IEnumerator ForceMovement(Vector3 targetPosition, Quaternion initialRotation, float speed, float duration, float intialWaitTime=0)
+    {
+        yield return new WaitForSeconds(intialWaitTime);
+
+        currentSpeed = speed;
+        transform.rotation = initialRotation;
+        float timer = 0;
+
+        while (timer < duration)
+        {
+            // Kinda bot method
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
             PlayMovementAnimation(speed > runSpeed);
 
             timer += Time.deltaTime;
             yield return null;
         }
+
+        transform.position = targetPosition;
 
         currentSpeed = 0;
         animator.SetFloat("speedPercent", 0);
