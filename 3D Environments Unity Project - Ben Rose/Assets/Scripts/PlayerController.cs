@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
 
             if (hitCollider.CompareTag("InteractableObject") && !currentInteractableObject)
             {
-                InteractableObject interactableObject = hitCollider.GetComponent<InteractableObject>();
+                InteractableObject interactableObject = hitCollider.GetComponent<InteractableObject>() ?? hitCollider.GetComponentInParent<InteractableObject>();
                 if (!interactableObject.GetInteractableState()) return;
 
                 currentInteractableObject = interactableObject;
@@ -234,6 +234,5 @@ public class PlayerController : MonoBehaviour
     public void SetNewCamera(Camera newCamera)
     {
         cameraTransform = newCamera.transform;
-        print(cameraTransform.rotation.eulerAngles);
     }
 }
