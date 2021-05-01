@@ -270,8 +270,6 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
 
-        transform.position = targetPosition;
-
         currentSpeed = 0;
         animator.SetFloat("speedPercent", 0);
     }
