@@ -18,9 +18,11 @@ public class CameraMovement : MonoBehaviour
      * priority (see Assets/Scripts/Editor).
     **/
 
-    // Advanced rotate variables
-    Vector3 CAMERA_START_POSITION;
+    // Follow variable
     readonly Vector3 CAMERA_FOLLOW_OFFSET = new Vector3(0, 0, -2);
+
+    // Advanced rotate variable
+    Vector3 CAMERA_START_POSITION;
 
     void Start()
     {
@@ -48,6 +50,8 @@ public class CameraMovement : MonoBehaviour
 
     void Follow()
     {
+        // Could have a better solution for the corridor camera (in regards to clipping through the backdoor) - atm those objects are just in the culling mask
+
         transform.position = new Vector3(transform.position.x, transform.position.y, player.position.z) + CAMERA_FOLLOW_OFFSET;
     }
 
