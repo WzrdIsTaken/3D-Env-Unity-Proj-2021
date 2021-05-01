@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] Transform pickableObjectPoint, interactionRaycastPoint;
     [SerializeField] TMP_Text interactionText;
+
+    [SerializeField] GameObject godModeText;
 #pragma warning restore 649
 
     Animator animator;
@@ -31,10 +33,10 @@ public class PlayerController : MonoBehaviour
     CharacterController controller;
 
     float turnSmoothVelocity, speedSmoothVelocity, currentSpeed, velocityY;
-    bool denyInput;
+    bool denyInput, inGodMode;
     InteractableObject currentInteractableObject, currentlyHoldingObject;
 
-    const KeyCode RUN_KEY = KeyCode.LeftShift, JUMP_KEY = KeyCode.Space, INTERACTION_KEY = KeyCode.P, ALT_INTERACTION_KEY = KeyCode.E, ACTION_KEY = KeyCode.Mouse0;
+    const KeyCode RUN_KEY = KeyCode.LeftShift, JUMP_KEY = KeyCode.Space, GOD_MODE_KEY = KeyCode.G, INTERACTION_KEY = KeyCode.P, ALT_INTERACTION_KEY = KeyCode.E, ACTION_KEY = KeyCode.Mouse0;
 
     void Start()
     {
@@ -42,8 +44,6 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
 
         interactionText.CrossFadeAlpha(0, 0, false);
-
-        Cursor.visible = false;
     }
 
     void Update()
@@ -58,6 +58,9 @@ public class PlayerController : MonoBehaviour
         Move(inputDirection, isRunning);
 
         if (Input.GetKeyDown(JUMP_KEY)) Jump();
+
+        // GodMode
+        if (Input.GetKeyDown(GOD_MODE_KEY)) ToggleGodMode();
 
         // Interaction
         Interact();
@@ -123,6 +126,12 @@ public class PlayerController : MonoBehaviour
         return smoothTime / airControl;
     }
 
+    void ToggleGodMode()
+    {
+        inGodMode = !inGodMode;
+        godModeText.SetActive(inGodMode);
+    }
+
     void Interact()
     {
         if (Physics.Raycast(interactionRaycastPoint.position, interactionRaycastPoint.forward, out RaycastHit hit, interactionRange) && controller.isGrounded)
@@ -160,6 +169,17 @@ public class PlayerController : MonoBehaviour
         if (currentlyHoldingObject) currentlyHoldingObject.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
     }
 
+    public void TakeDamage(int damage)
+    {
+        // Would have some health logic here, but sadly for you everything in this level is a one shot
+
+        if (inGodMode || denyInput) return;
+
+        denyInput = true;
+        FindObjectOfType<VfxCanvasManager>().PlayAnimation(VfxCanvasManager.Animation.FADE_OUT);
+        FindObjectOfType<LevelManager>().ToggleEndPanel(true, inGodMode, LevelManager.EndPanelState.DEATH, 1);
+    }
+
     public InteractableObject GetCurrentlyHoldingObject()
     {
         return currentlyHoldingObject;
@@ -190,7 +210,7 @@ public class PlayerController : MonoBehaviour
         denyInput = _denyInput;
 
         currentSpeed = 0;
-        animator.SetFloat("speedPercent", 0);
+        animator?.SetFloat("speedPercent", 0);
     }
 
     public IEnumerator ForceRotation(Quaternion targetRotation, float duration, float intialWaitTime=0)

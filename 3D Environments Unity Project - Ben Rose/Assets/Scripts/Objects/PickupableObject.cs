@@ -11,6 +11,7 @@ public class PickupableObject : InteractableObject
     {
         rb = GetComponent<Rigidbody>();
 
+        // Create a collider around the object so its easier to raycast to
         GameObject raycastColliderGameObject = new GameObject("RaycastCollider");
         raycastColliderGameObject.transform.SetParent(gameObject.transform, false);
         raycastColliderGameObject.tag = "InteractableObject";

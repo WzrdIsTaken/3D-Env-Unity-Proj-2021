@@ -17,5 +17,6 @@ public class Tripwire : MonoBehaviour
     {
         GetComponent<BoxCollider>().enabled = false;
         StartCoroutine(FindObjectOfType<DungeonManager>().StartAnimation(DungeonManager.Animation.SWING_BLADES));
+        StartCoroutine(FindObjectOfType<Blades>().EnableBladeCollider(1));
     }
 }
