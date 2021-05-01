@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-// Some logic so, amongst other things, ensure that the player doesn't accelerate to mach 1 when they get hit
+// Some logic to, amongst other things, ensure that the player doesn't accelerate to mach 1 when they get hit
 
 /** 
  * Basically the blade collisions are happening too fast, so the easiest way to solve the problem imo is just to have this 'box'
