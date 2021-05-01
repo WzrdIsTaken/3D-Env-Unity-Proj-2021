@@ -5,7 +5,7 @@ using System.Collections;
 
 /** 
  * Basically the blade collisions are happening too fast, so the easiest way to solve the problem imo is just to have this 'box'
- * which if the player is in when the blades go off then it acts as they got hit by them.
+ * which if the player is in when the blades go off then it acts as if they got hit by them.
 **/
 
 public class Blades : MonoBehaviour
