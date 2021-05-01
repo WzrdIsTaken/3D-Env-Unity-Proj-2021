@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System;
 using TMPro;
 using System.Collections;
@@ -36,7 +35,7 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(FadeUI(enable, FADE_TIME, endPanel, fadeDelay));
 
         TimeSpan totalTime = TimeSpan.FromSeconds(Time.time - startTime);
-        string time = totalTime.ToString("'mm':'ss'");
+        string time = totalTime.ToString("mm':'ss");
 
         endPanel.transform.Find("EndText").GetComponent<TMP_Text>().text = state == EndPanelState.DEATH ? "You died!" : "Level complete!";
         endPanel.transform.Find("CommentText").GetComponent<TMP_Text>().text = state == EndPanelState.DEATH ? "Ouch!" : "Nice job!";
@@ -62,21 +61,22 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator FadeUI(bool fadeIn, float fadeTime, GameObject parent, float fadeDelay=0)
     {
-        Graphic[] ui = parent.GetComponentsInChildren<Graphic>();
-
-        if (fadeIn)
-        {
-            // I have no clue why this is needed. Maybe the alpha value used in CrossFadeAlpha resets after a gameobject has been disabled? 
-            foreach (Graphic element in ui) element.CrossFadeAlpha(0, 0, false);
-
-            parent.gameObject.SetActive(true);
-        }
-
         yield return new WaitForSeconds(fadeDelay);
 
-        foreach (Graphic element in ui) element.CrossFadeAlpha(fadeIn ? 1 : 0, fadeTime, false);
-        yield return new WaitForSeconds(fadeTime);
+        if (fadeIn) parent.SetActive(true);
 
-        if (!fadeIn) parent.gameObject.SetActive(false);
+        CanvasGroup canvasGroup = parent.GetComponent<CanvasGroup>();
+        float timer = 0;
+
+        while (timer < fadeTime)
+        {
+            timer += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(fadeIn ? 0 : 1, fadeIn ? 1 : 0, timer / fadeTime);
+
+            yield return null;
+        }
+
+        canvasGroup.alpha = fadeIn ? 1 : 0;
+        if (!fadeIn) parent.SetActive(false);
     }
 }

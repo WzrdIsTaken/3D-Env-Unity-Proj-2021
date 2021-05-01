@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 // Controls the player 5head | Movement base: https://bit.ly/391dTIA
 
@@ -23,9 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float interactionRange = 2;
 
     [SerializeField] Transform pickableObjectPoint, interactionRaycastPoint;
-    [SerializeField] TMP_Text interactionText;
-
-    [SerializeField] GameObject godModeText;
+    [SerializeField] TMP_Text interactionText, godModeText;
 #pragma warning restore 649
 
     Animator animator;
@@ -43,7 +42,8 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
 
-        interactionText.CrossFadeAlpha(0, 0, false);
+        interactionText.CrossFadeAlpha(0, 0, true);
+        godModeText.CrossFadeAlpha(0, 0, true);
     }
 
     void Update()
@@ -129,7 +129,7 @@ public class PlayerController : MonoBehaviour
     void ToggleGodMode()
     {
         inGodMode = !inGodMode;
-        godModeText.SetActive(inGodMode);
+        godModeText.CrossFadeAlpha(inGodMode ? 1 : 0, 0.25f, true);
     }
 
     void Interact()
@@ -175,9 +175,33 @@ public class PlayerController : MonoBehaviour
 
         if (inGodMode || denyInput) return;
 
-        denyInput = true;
+        SetDenyInput(true);
+        DeathEffect();
+
         FindObjectOfType<VfxCanvasManager>().PlayAnimation(VfxCanvasManager.Animation.FADE_OUT);
         FindObjectOfType<LevelManager>().ToggleEndPanel(true, inGodMode, LevelManager.EndPanelState.DEATH, 1);
+    }
+
+    void DeathEffect()
+    {
+        // This is a pretty inefficient and inelegant solution for a death effect, but I think its kinda funny
+
+        /**
+         * This is very low priority. I would like the character to just collapse in all its different pieces, 
+         * but at the moment it just kinda explodes xD.
+         * 
+         * Nvm, I've fully embraced the explosion - its way better :D
+        **/
+
+        void AddRigidbodyAndForce(GameObject gO)
+        {
+            gO.AddComponent<Rigidbody>().AddForce(Random.Range(-3, 3), Random.Range(3, 6), Random.Range(-3, 3), ForceMode.Impulse);
+        }
+
+        animator.enabled = false;
+
+        AddRigidbodyAndForce(transform.Find("Tourch").gameObject);
+        foreach (Transform child in transform.Find("Armature").GetComponentsInChildren<Transform>()) AddRigidbodyAndForce(child.gameObject);
     }
 
     public InteractableObject GetCurrentlyHoldingObject()

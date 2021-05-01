@@ -29,10 +29,6 @@ public class Blades : MonoBehaviour
 
     void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            //collision.gameObject.GetComponent<PlayerController>().TakeDamage(int.MaxValue);
-            print("called!");
-        }
+        if (collision.gameObject.CompareTag("Player")) collision.gameObject.GetComponent<PlayerController>().TakeDamage(int.MaxValue);
     }
 }
