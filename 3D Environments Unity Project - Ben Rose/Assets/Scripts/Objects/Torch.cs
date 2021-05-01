@@ -23,14 +23,12 @@ public class Torch : MonoBehaviour
         float startIntesity = tourchLight.intensity;
         float endIntesity = Random.Range(0.5f, 1.0f);
 
-        while (true)
+        while (timer < flickerTime)
         {
             tourchLight.intensity = Mathf.Lerp(startIntesity, endIntesity, timer / flickerTime);
 
             timer += Time.deltaTime;
             yield return null;
-
-            if (timer > flickerTime) break;
         }
 
         StartCoroutine(Flicker());
