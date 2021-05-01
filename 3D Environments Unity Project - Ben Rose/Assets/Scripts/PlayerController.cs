@@ -187,8 +187,7 @@ public class PlayerController : MonoBehaviour
         // This is a pretty inefficient and inelegant solution for a death effect, but I think its kinda funny
 
         /**
-         * This is very low priority. I would like the character to just collapse in all its different pieces, 
-         * but at the moment it just kinda explodes xD.
+         * This is very low priority. I would like the character to just collapse in all its different pieces, but at the moment it just explodes xD.
          * 
          * Nvm, I've fully embraced the explosion - its way better :D
         **/
