@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
 using System.Collections;
-using System.Collections.Generic;
 
 // Controls the player 5head | Movement base: https://bit.ly/391dTIA
 
