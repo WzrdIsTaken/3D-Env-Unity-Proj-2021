@@ -9,26 +9,27 @@ public class Portal : MonoBehaviour
 #pragma warning restore 649
 
     MeshRenderer portalTextureMesh;
+    ParticleSystem portalParticleSystem;
     bool isActivated = false;
 
     void Start()
     {
         portalTextureMesh = GetComponentInChildren<MeshRenderer>();
-        //portalTextureMesh.gameObject.SetActive(false);
-        StartCoroutine(AnimatePortalTexture());
+        portalParticleSystem = GetComponentInChildren<ParticleSystem>();
+
+        portalTextureMesh.gameObject.SetActive(false);
     }
 
     public void ActivatePortal()
     {
         portalTextureMesh.gameObject.SetActive(true);
+        portalParticleSystem.Play();
 
         isActivated = true;
     }
 
     void OnTriggerEnter(Collider collision)
     {
-        print("called");
-
         if (collision.gameObject.CompareTag("Player") && isActivated)
         {
             // A cooler animation could be nice, but not a big priority
@@ -67,8 +68,3 @@ public class Portal : MonoBehaviour
         StartCoroutine(AnimatePortalTexture(portalTextureScrollSpeed));
     }
 }
-
-// TODO:
-// - Make it so maya actually combines the shapes, not a fake combine
-// - Change the colour of the portal if possible
-// - Add some particle effects!
