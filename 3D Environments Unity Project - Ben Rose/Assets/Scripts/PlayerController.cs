@@ -202,6 +202,11 @@ public class PlayerController : MonoBehaviour
         foreach (Transform child in transform.Find("Armature").GetComponentsInChildren<Transform>()) AddRigidbodyAndForce(child.gameObject);
     }
 
+    public bool GetInGodMode()
+    {
+        return inGodMode;
+    }
+
     public InteractableObject GetCurrentlyHoldingObject()
     {
         return currentlyHoldingObject;

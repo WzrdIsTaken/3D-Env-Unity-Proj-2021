@@ -1,25 +1,36 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 // The actual portal you go through
 public class Portal : MonoBehaviour
 {
+    MeshRenderer portalTextureMesh;
     bool isActivated = false;
+
+    void Start()
+    {
+        portalTextureMesh = GetComponentInChildren<MeshRenderer>();
+        portalTextureMesh.gameObject.SetActive(false);
+    }
 
     public void ActivatePortal()
     {
-        // - Shader starting
-        // - ^ Cool cutscene ^
+        portalTextureMesh.gameObject.SetActive(true);
 
         isActivated = true;
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collision)
     {
-        if (collision.collider.CompareTag("Player") && isActivated)
+        print("called");
+
+        if (collision.gameObject.CompareTag("Player") && isActivated)
         {
-            // Todo: Cool animation
-            SceneManager.LoadScene("Wherever we go next");
+            // A cooler animation could be nice, but not a big priority
+            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+
+            playerController.SetDenyInput(true);
+            FindObjectOfType<VfxCanvasManager>().PlayAnimation(VfxCanvasManager.Animation.FADE_OUT);
+            FindObjectOfType<LevelManager>().ToggleEndPanel(true, playerController.GetInGodMode(), LevelManager.EndPanelState.LEVEL_END, 1);
         }
     }
 }
