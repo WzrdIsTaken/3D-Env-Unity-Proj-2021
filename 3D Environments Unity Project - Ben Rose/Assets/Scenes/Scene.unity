@@ -1114,6 +1114,21 @@ PrefabInstance:
       propertyPath: fadeOutAnimation
       value: 
       objectReference: {fileID: 2029126362}
+    - target: {fileID: 4250081871249567716, guid: afebc210bdba29742846b8e0b748ea90,
+        type: 3}
+      propertyPath: CollisionModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4250251251327587926, guid: afebc210bdba29742846b8e0b748ea90,
+        type: 3}
+      propertyPath: CollisionModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4250251251327587926, guid: afebc210bdba29742846b8e0b748ea90,
+        type: 3}
+      propertyPath: CollisionModule.type
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afebc210bdba29742846b8e0b748ea90, type: 3}
 --- !u!1 &352760580
@@ -3683,6 +3698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfdfde32497ed6e4ca30a87da3e0e89e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0.3
 --- !u!1 &1373660662
 GameObject:
   m_ObjectHideFlags: 0
@@ -23421,7 +23437,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: 23bcf42821f3a544cb269c33c52fe0e3, type: 3}
+  - {fileID: 2100000, guid: 0b0c5008a879c18488732d97410cb6ae, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -1,15 +1,21 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 // The actual portal you go through
 public class Portal : MonoBehaviour
 {
+#pragma warning disable 649
+    [SerializeField] float speed;
+#pragma warning restore 649
+
     MeshRenderer portalTextureMesh;
     bool isActivated = false;
 
     void Start()
     {
         portalTextureMesh = GetComponentInChildren<MeshRenderer>();
-        portalTextureMesh.gameObject.SetActive(false);
+        //portalTextureMesh.gameObject.SetActive(false);
+        StartCoroutine(AnimatePortalTexture());
     }
 
     public void ActivatePortal()
@@ -33,4 +39,36 @@ public class Portal : MonoBehaviour
             FindObjectOfType<LevelManager>().ToggleEndPanel(true, playerController.GetInGodMode(), LevelManager.EndPanelState.LEVEL_END, 1);
         }
     }
+
+    // I would have like to have used a shadergraph for this + make a cooler effect, but when I tried to import LWRP into the project every texture just broke.
+    // Might figure out a solution to that later, but for now this effect is ok.
+    IEnumerator AnimatePortalTexture(Vector2 oldSpeed=new Vector2())
+    {
+        Vector2 portalTextureScrollSpeed = new Vector2(Random.Range(-speed, speed), Random.Range(-speed, speed));
+        float duration = Random.Range(3, 5);
+        float timer = 0;
+        bool changingDirection = oldSpeed != Vector2.zero;
+
+        while (timer < duration)
+        {
+            Vector2 newOffset = changingDirection ? Vector2.Lerp(oldSpeed, portalTextureScrollSpeed, timer / duration) : portalTextureScrollSpeed;
+            portalTextureMesh.material.SetTextureOffset("_MainTex", portalTextureMesh.material.mainTextureOffset + newOffset * Time.deltaTime);
+
+            timer += Time.deltaTime;
+            if (timer > duration && changingDirection)
+            {
+                timer = 0;
+                changingDirection = false;
+            }
+
+            yield return null;
+        }
+
+        StartCoroutine(AnimatePortalTexture(portalTextureScrollSpeed));
+    }
 }
+
+// TODO:
+// - Make it so maya actually combines the shapes, not a fake combine
+// - Change the colour of the portal if possible
+// - Add some particle effects!
