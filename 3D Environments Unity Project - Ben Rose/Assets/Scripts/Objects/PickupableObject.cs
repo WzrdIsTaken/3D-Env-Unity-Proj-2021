@@ -5,7 +5,7 @@ public class PickupableObject : InteractableObject
 {
     protected Rigidbody rb;
 
-    const float RAYCAST_COLLIDER_SIZE = 10;
+    const float RAYCAST_COLLIDER_SIZE = 12;
 
     void Start()
     {
