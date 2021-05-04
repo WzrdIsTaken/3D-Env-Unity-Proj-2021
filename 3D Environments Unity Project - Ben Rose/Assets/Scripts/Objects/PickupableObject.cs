@@ -35,5 +35,14 @@ public class PickupableObject : InteractableObject
 
         gameObject.transform.parent = null;
         rb.constraints = RigidbodyConstraints.None;
+
+        isInteractable = false;
+        Invoke(nameof(MakeInteractableAgain), 0.5f);
+    }
+
+    // Means that the user can't spam action + interact
+    void MakeInteractableAgain()
+    {
+        isInteractable = true;
     }
 }

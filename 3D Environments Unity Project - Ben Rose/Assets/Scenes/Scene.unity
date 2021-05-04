@@ -2763,6 +2763,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectName: Portal Activator
   typeOfInteraction: 2
+  requiredForFurtherInteraction: 0
   portal: {fileID: 1362806430}
   powerCubePos: {x: 4.501, y: 0.807, z: 38.49}
 --- !u!1 &857552399
@@ -3120,6 +3121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectName: Door
   typeOfInteraction: 1
+  requiredForFurtherInteraction: 0
 --- !u!65 &977228578
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9257,6 +9259,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 2b414a3d520fe84419d3bd90757414bd, type: 2}
+    - target: {fileID: 6131567125908797671, guid: a0a19bb4662ea0e47a99ed18cf50720c,
+        type: 3}
+      propertyPath: requiredForFurtherInteraction
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0a19bb4662ea0e47a99ed18cf50720c, type: 3}
 --- !u!4 &1502424288 stripped

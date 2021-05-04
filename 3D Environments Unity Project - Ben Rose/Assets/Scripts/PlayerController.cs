@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviour
             {
                 // Pickupable objects have a child collider to make them easier to raycast to, so to get the InteractableObject component we have to access the parent
                 InteractableObject interactableObject = hitCollider.GetComponent<InteractableObject>() ?? hitCollider.GetComponentInParent<InteractableObject>(); 
-                if (!interactableObject.GetInteractableState()) return;
+                if (!interactableObject.GetInteractableState() || (currentlyHoldingObject && interactableObject is PickupableObject)) return;
 
                 currentInteractableObject = interactableObject;
                 currentInteractableObject.DisplayMessage(true, this);
