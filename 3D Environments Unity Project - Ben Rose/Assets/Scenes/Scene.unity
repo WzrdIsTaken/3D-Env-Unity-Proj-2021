@@ -2247,8 +2247,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 10, y: 7}
-  m_SizeDelta: {x: 864.5, y: 285.6}
+  m_AnchoredPosition: {x: 0, y: 7}
+  m_SizeDelta: {x: 883, y: 285.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &650552172
 MonoBehaviour:
@@ -2275,7 +2275,7 @@ MonoBehaviour:
 
     Controls:
 
-    - WSAD to move, hold shift to run
+    - WSAD to move, hold shift to run, press space to jump
 
     - P to interact / uninteract with an object
 
@@ -2332,7 +2332,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 169
+  m_firstOverflowCharacterIndex: 190
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -2356,10 +2356,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 650552172}
-    characterCount: 201
+    characterCount: 222
     spriteCount: 0
-    spaceCount: 43
-    wordCount: 39
+    spaceCount: 47
+    wordCount: 43
     linkCount: 0
     lineCount: 10
     pageCount: 1
