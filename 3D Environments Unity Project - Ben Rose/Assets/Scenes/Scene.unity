@@ -1155,6 +1155,11 @@ PrefabInstance:
       propertyPath: CollisionModule.type
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6986673654097785726, guid: afebc210bdba29742846b8e0b748ea90,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 202d5585a479f3b45a83e1a9561e76f6, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afebc210bdba29742846b8e0b748ea90, type: 3}
 --- !u!1 &352760580
