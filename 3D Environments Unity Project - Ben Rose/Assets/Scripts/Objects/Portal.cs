@@ -23,6 +23,7 @@ public class Portal : MonoBehaviour
     public void ActivatePortal()
     {
         portalTextureMesh.gameObject.SetActive(true);
+        StartCoroutine(AnimatePortalTexture());
         portalParticleSystem.Play();
 
         isActivated = true;
@@ -46,7 +47,7 @@ public class Portal : MonoBehaviour
     IEnumerator AnimatePortalTexture(Vector2 oldSpeed=new Vector2())
     {
         Vector2 portalTextureScrollSpeed = new Vector2(Random.Range(-speed, speed), Random.Range(-speed, speed));
-        float duration = Random.Range(3, 5);
+        float duration = Random.Range(1, 3);
         float timer = 0;
         bool changingDirection = oldSpeed != Vector2.zero;
 
