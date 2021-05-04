@@ -735,20 +735,12 @@ MonoBehaviour:
   cameras:
   - location: 0
     camera: {fileID: 2004455947}
-    dontMakePlayerRotationPoint: 0
-    cameraMovement: 0
   - location: 1
     camera: {fileID: 2008207658}
-    dontMakePlayerRotationPoint: 0
-    cameraMovement: 0
   - location: 2
     camera: {fileID: 1452727679}
-    dontMakePlayerRotationPoint: 0
-    cameraMovement: 0
   - location: 3
     camera: {fileID: 1593620772}
-    dontMakePlayerRotationPoint: 1
-    cameraMovement: 0
 --- !u!1 &256956965
 GameObject:
   m_ObjectHideFlags: 0

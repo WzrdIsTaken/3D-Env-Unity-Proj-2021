@@ -30,7 +30,7 @@ public class CameraManager : MonoBehaviour
         currentCamera = keyCameraData.camera;
         currentCamera.gameObject.SetActive(true);
 
-        currentCamera.transform.rotation = currentCamera.GetComponent<CameraMovement>().GetStartRotation();
+        currentCamera.transform.rotation = currentCamera.GetComponent<CameraMovement>().GetStartRotation(); // Have to grab this here instead of storing it in the struct because cameras start disabled
         player.SetNewCamera(currentCamera);
     }
 
@@ -55,7 +55,7 @@ public class CameraManager : MonoBehaviour
         public CameraLocations location;
         public Camera camera;
 
-        public KeyCameraPair(CameraLocations _location, Camera _camera)
+        public KeyCameraPair(CameraLocations _location, Camera _camera, bool _dontMakePlayerRotationPoint)
         {
             location = _location;
             camera = _camera;
