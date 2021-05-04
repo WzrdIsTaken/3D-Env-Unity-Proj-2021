@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
 #pragma warning restore 649
 
     Animator animator;
-    Transform cameraTransform;
+    Vector3 cameraRotation;
     CharacterController controller;
 
     float turnSmoothVelocity, speedSmoothVelocity, currentSpeed, velocityY;
@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
     {
         if (inputDirection != Vector2.zero)
         {
-            float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg + Mathf.Clamp(cameraTransform.eulerAngles.y, 0, 60);
+            float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg + Mathf.Clamp(cameraRotation.y, 0, 60);
             transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref turnSmoothVelocity, GetModifiedSmoothTime(turnSmoothTime));
         }
 
@@ -300,6 +300,6 @@ public class PlayerController : MonoBehaviour
 
     public void SetNewCamera(Camera newCamera)
     {
-        cameraTransform = newCamera.transform;
+        cameraRotation = newCamera.transform.eulerAngles;
     }
 }

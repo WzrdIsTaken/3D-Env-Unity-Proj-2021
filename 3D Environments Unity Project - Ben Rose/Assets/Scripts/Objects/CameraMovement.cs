@@ -9,6 +9,7 @@ public class CameraMovement : MonoBehaviour
 
     [HideInInspector] public enum CameraMode { NONE, FOLLOW, ROTATE, ADVANCED_ROTATE };
     Transform player;
+    Quaternion CAMERA_START_ROTATION;
 
     // CameraMode specific stuff: 
 
@@ -27,6 +28,8 @@ public class CameraMovement : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<PlayerController>().transform;
+
+        CAMERA_START_ROTATION = transform.rotation;
         CAMERA_START_POSITION = transform.position;
     }
 
@@ -72,5 +75,10 @@ public class CameraMovement : MonoBehaviour
     public CameraMode GetCameraMode()
     {
         return cameraMode;
+    }
+
+    public Quaternion GetStartRotation()
+    {
+        return CAMERA_START_ROTATION;
     }
 }

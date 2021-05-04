@@ -2763,7 +2763,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectName: Portal Activator
   typeOfInteraction: 2
-  requiredForFurtherInteraction: 0
   portal: {fileID: 1362806430}
   powerCubePos: {x: 4.501, y: 0.807, z: 38.49}
 --- !u!1 &857552399
@@ -3121,7 +3120,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectName: Door
   typeOfInteraction: 1
-  requiredForFurtherInteraction: 0
 --- !u!65 &977228578
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ public class CameraManager : MonoBehaviour
     [HideInInspector] public enum CameraLocations { START_ROOM, CORRIDOR, MAIN_ROOM, CUBBIES };
 
 #pragma warning disable 649
-    [SerializeField] KeyCameraData[] cameras;
+    [SerializeField] KeyCameraPair[] cameras;
 #pragma warning restore 649
 
     CameraLocations currentCameraLocation;
@@ -24,27 +24,19 @@ public class CameraManager : MonoBehaviour
 
     public void PlayerCollidedWithTrigger(CameraLocations location)
     {
-        KeyCameraData keyCameraData = GetCameraWithKey(location);
+        KeyCameraPair keyCameraData = GetCameraWithKey(location);
 
         currentCamera.gameObject.SetActive(false);
         currentCamera = keyCameraData.camera;
         currentCamera.gameObject.SetActive(true);
 
-        if (!keyCameraData.dontMakePlayerRotationPoint) 
-        {
-            if (keyCameraData.cameraMovement == CameraMovement.CameraMode.ROTATE || keyCameraData.cameraMovement == CameraMovement.CameraMode.ADVANCED_ROTATE) 
-            {
-                // Movement in the main room sometimes feels a bit off
-                // I don't know if its placebo (xd) but setting the camera rotation back to 0 might help?
-                // Todo: Experiement with this
-            }
-            player.SetNewCamera(currentCamera);
-        }
+        currentCamera.transform.rotation = currentCamera.GetComponent<CameraMovement>().GetStartRotation();
+        player.SetNewCamera(currentCamera);
     }
 
-    KeyCameraData GetCameraWithKey(CameraLocations location) // Could precalculate all kvp's with a dict
+    KeyCameraPair GetCameraWithKey(CameraLocations location) // Could precalculate all kvp's with a dict
     {
-        foreach (KeyCameraData pair in cameras)
+        foreach (KeyCameraPair pair in cameras)
         {
             if (pair.location == location) 
             {
@@ -58,20 +50,15 @@ public class CameraManager : MonoBehaviour
     }
 
     [System.Serializable]
-    struct KeyCameraData
+    struct KeyCameraPair
     {
         public CameraLocations location;
         public Camera camera;
-        public bool dontMakePlayerRotationPoint;
-        [HideInInspector] public CameraMovement.CameraMode cameraMovement;
 
-        public KeyCameraData(CameraLocations _location, Camera _camera, bool _dontMakePlayerRotationPoint)
+        public KeyCameraPair(CameraLocations _location, Camera _camera)
         {
             location = _location;
             camera = _camera;
-            dontMakePlayerRotationPoint = _dontMakePlayerRotationPoint;
-
-            cameraMovement = camera.GetComponent<CameraMovement>().GetCameraMode();
         }
     }
 }
