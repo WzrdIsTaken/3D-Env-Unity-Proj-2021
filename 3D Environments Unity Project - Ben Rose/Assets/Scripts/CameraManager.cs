@@ -55,7 +55,7 @@ public class CameraManager : MonoBehaviour
         public CameraLocations location;
         public Camera camera;
 
-        public KeyCameraPair(CameraLocations _location, Camera _camera, bool _dontMakePlayerRotationPoint)
+        public KeyCameraPair(CameraLocations _location, Camera _camera)
         {
             location = _location;
             camera = _camera;
